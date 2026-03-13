@@ -17,19 +17,19 @@ This script monitors the GID bot log files and automatically posts item drops to
 
 ## Perfect Item
 
-![Perfect Item](Screenshots/discord_example_perfect.png)
+![Perfect Item](Screenshots/discord_example_perfect.PNG)
 
 ---
 
 ## Rune Drop
 
-![Rune Drop](Screenshots/discord_example_rune.png)
+![Rune Drop](Screenshots/discord_example_rune.PNG)
 
 ---
 
 # Farming Statistics Dashboard
 
-![Dashboard](Screenshots/dashboard_example.png)
+![Dashboard](Screenshots/dashboard_example.PNG)
 
 The script automatically builds a dashboard showing:
 
@@ -45,7 +45,7 @@ The script automatically builds a dashboard showing:
 
 Your folder should look like this:
 
-![Folder Structure](Screenshots/folder_structure.png)
+![Folder Structure](Screenshots/folder_structure.PNG)
 
 ```
 WebhookWithImages/
@@ -140,7 +140,7 @@ Copy the **Webhook URL**.
 
 Example:
 
-![Webhook Creation](Screenshots/webhook_create.png)
+![Webhook Creation](Screenshots/webhook_create.PNG)
 
 ---
 
@@ -170,11 +170,6 @@ Unblock
 
 Click **OK**.
 
-Example:
-
-![Unblock Script](Screenshots/unblock_script.png)
-
----
 
 # 4 Configure the Script
 
@@ -198,7 +193,7 @@ $webhookConfig = @{
 
 Example:
 
-![Edit Script](Screenshots/edit_script_webhook.png)
+![Edit Script](Screenshots/edit_script_webhook.PNG)
 
 ---
 
@@ -377,7 +372,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File ".\WebhookWithImages.ps1"
 
 Example:
 
-![PowerShell Run](Screenshots/powershell_run.png)
+![PowerShell Run](Screenshots/powershell_run.PNG)
 
 Leave this window open.
 
@@ -454,4 +449,5 @@ Anyone with the webhook URL can post messages to your Discord.
 # Credits
 
 Created by **Saggin_Nutz**  
+
 for the **GID / Diablo II Resurrected bot community**
