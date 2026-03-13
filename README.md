@@ -372,7 +372,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File ".\WebhookWithImages.ps1"
 
 Example:
 
-![PowerShell Run](Screenshots/powershell_run.PNG)
+![PowerShell Run](Screenshots/powershell_run.png)
 
 Leave this window open.
 
@@ -451,3 +451,4 @@ Anyone with the webhook URL can post messages to your Discord.
 Created by **Saggin_Nutz**  
 
 for the **GID / Diablo II Resurrected bot community**
+
