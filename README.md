@@ -25,7 +25,7 @@ This script monitors your GID bot log files and automatically posts item drops t
 ![Rune Drop](Screenshots/discord_example_rune.png)
 
 ### Farming Statistics Dashboard
-![Dashboard](Screenshots/dashboard.png)
+![Dashboard](Screenshots/dashboard_example.png)
 
 The script automatically builds a dashboard showing:
 
