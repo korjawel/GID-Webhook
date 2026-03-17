@@ -19,7 +19,7 @@ This script monitors your GID bot log files and automatically posts item drops t
 ## Example Discord Notifications
 
 ### Perfect Item
-![Perfect Item](Screenshots/perfect-item.png)
+![Perfect Item](Screenshots/discord_example_perfect.png)
 
 ### Rune Drop
 ![Rune Drop](Screenshots/rune-drop.png)
