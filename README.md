@@ -1,56 +1,52 @@
 # Diablo II Resurrected – GID Discord Drop Tracker
 
-A **real-time Discord notification system for GID / D2RB bots**.
+A real-time Discord notification system for GID / D2RB bots.
 
-This script monitors the GID bot log files and automatically posts item drops to Discord with:
+This script monitors your GID bot log files and automatically posts item drops to Discord with:
 
-• Item images  
-• Drop location  
-• Character name  
-• Roll quality detection  
-• Perfect item tracking  
-• Farming statistics dashboard  
-
----
-
-# Example Discord Notifications
-
-## Perfect Item
-
-![Perfect Item](Screenshots/discord_example_perfect.PNG)
+- Item images
+- Drop location
+- Character name
+- Roll quality detection
+- Perfect item tracking
+- Farming statistics dashboard
+- Session dashboard summaries
+- Local image fallback support
+- Config-based setup that survives future script updates
 
 ---
 
-## Rune Drop
+## Example Discord Notifications
 
-![Rune Drop](Screenshots/discord_example_rune.PNG)
+### Perfect Item
+![Perfect Item](Screenshots/perfect-item.png)
 
----
+### Rune Drop
+![Rune Drop](Screenshots/rune-drop.png)
 
-# Farming Statistics Dashboard
-
-![Dashboard](Screenshots/dashboard_example.PNG)
+### Farming Statistics Dashboard
+![Dashboard](Screenshots/dashboard.png)
 
 The script automatically builds a dashboard showing:
 
-• Items per hour  
-• Rune drop history  
-• Farming zone performance  
-• Character efficiency  
-• Perfect roll tracking  
+- Items per hour
+- Rune drop history
+- Farming zone performance
+- Character efficiency
+- Perfect roll tracking
+- Daily, weekly, and session summaries
 
 ---
 
-# Folder Structure
+## Folder Structure
 
 Your folder should look like this:
 
-![Folder Structure](Screenshots/folder_structure.PNG)
-
-```
+```text
 WebhookWithImages/
 │
 ├── WebhookWithImages.ps1
+├── UserConfig.psd1
 │
 ├── PerfectRollRules.json
 ├── PerfectRolls.json
@@ -68,55 +64,47 @@ WebhookWithImages/
 └── QUICKSTART.txt
 ```
 
----
-
-# Requirements
-
-You **must install these first**.
+> **Important:**  
+> Do not put your personal webhook URLs or local paths into the main `.ps1` script.  
+> Put all personal settings in `UserConfig.psd1`.
 
 ---
 
-# 1 Install PowerShell 7
+## Requirements
 
-Download:
+You must install these first.
 
+### 1. Install PowerShell 7
+
+Download the Windows installer from the PowerShell releases page:
+
+```text
 https://github.com/PowerShell/PowerShell/releases
+```
 
-Download the **Windows .msi installer**.
-
-Install like any normal program.
-
----
+Install the `.msi` version like any normal program.
 
 ### Verify installation
 
 Press:
 
-```
+```text
 Windows Key + R
 ```
 
 Type:
 
-```
+```text
 pwsh
 ```
 
 Press Enter.
 
-You should see a blue PowerShell window.
-
-Example:
-
-```
-PowerShell 7.x.x
-```
-
-If this does not open, PowerShell 7 is not installed.
+You should see a blue PowerShell window showing version 7.x.
 
 ---
 
-# 2 Create a Discord Webhook
+## 2. Create a Discord Webhook
 
 Open Discord.
 
@@ -124,331 +112,336 @@ Right click the channel you want item drops in.
 
 Click:
 
-```
+```text
 Edit Channel
-```
-
-Then click:
-
-```
 Integrations
 Webhooks
 New Webhook
 ```
 
-Copy the **Webhook URL**.
-
-Example:
-
-![Webhook Creation](Screenshots/webhook_create.PNG)
+Copy the webhook URL.
 
 ---
 
-# 3 Unblock the Script (IMPORTANT)
+## 3. Unblock the Script (Important)
 
-Windows blocks downloaded scripts for security.
-
-If you skip this step the script will not run.
+Windows may block downloaded scripts.
 
 Right click:
 
-```
+```text
 WebhookWithImages.ps1
 ```
 
 Click:
 
-```
+```text
 Properties
 ```
 
-At the bottom check:
+At the bottom, check:
 
-```
+```text
 Unblock
 ```
 
 Click **OK**.
 
+You may also want to repeat this for:
 
-# 4 Configure the Script
+- `UserConfig.psd1`
+- `PerfectRollRules.json`
+
+---
+
+## 4. Configure the Tracker (New Config Method)
+
+You no longer need to edit personal settings inside the main script.
 
 Open:
 
-```
-WebhookWithImages.ps1
+```text
+UserConfig.psd1
 ```
 
-Use **Notepad++** or **Notepad**.
+This file stores:
+
+- Discord webhook URLs
+- GID folder paths
+- High rune threshold
+- Enabled/disabled channels
+- Summary settings
+- Muled settings
+
+This means you only set it up once.
+
+When a new script version is released, you normally keep your existing `UserConfig.psd1` and replace only the `.ps1` file.
 
 ---
 
-### Find the webhook configuration
+## 5. Add Your Webhooks
 
-Around **line 80** you will see:
+Inside `UserConfig.psd1`, find:
 
 ```powershell
-$webhookConfig = @{
+Webhooks = @{
 ```
 
-Example:
+Paste your webhook URLs there.
 
-![Edit Script](Screenshots/edit_script_webhook.PNG)
+### Basic one-webhook setup
 
----
-
-Replace this line:
+If you want everything to go to one Discord channel, fill only:
 
 ```powershell
-"Default" = "YOUR_WEBHOOK_URL_HERE"
+Default = "PASTE_WEBHOOK_URL_HERE"
 ```
 
-with your webhook URL.
+### Multi-channel setup
 
-Example:
+You can also split posts by category, for example:
+
+- `Runes`
+- `HighRunes`
+- `Uniques`
+- `Sets`
+- `Runewords`
+- `Charms`
+- `Jewels`
+- `Essences`
+- `Keys`
+- `DailySummary`
+- `WeeklySummary`
+- `SessionDashboard`
+- `Muled`
+
+If a category is left blank or set to a placeholder, the script will use fallback behavior where applicable.
+
+---
+
+## 6. Configure Your GID Folder Paths
+
+Inside `UserConfig.psd1`, find:
 
 ```powershell
-"Default" = "https://discord.com/api/webhooks/123456789/ABCDEFGHIJKLM"
+Paths = @{
 ```
 
----
-
-### Using ONE webhook only
-
-This is the **simplest setup**.
-
-Everything will post to the same Discord channel.
-
-You only need:
-
-```
-Default
-```
-
-No other changes required.
-
----
-
-### Using multiple Discord channels (optional)
-
-You can split item types into different channels.
-
-Available categories:
-
-```
-Default
-Runes
-HighRunes
-Uniques
-Sets
-Runewords
-Charms
-Jewels
-Weapons
-Armor
-Keys
-DLC
-Deaths
-DailySummary
-WeeklySummary
-```
-
-If a category does not have a webhook it automatically posts to **Default**.
-
----
-
-# 5 Configure GID Folder Paths
-
-Find these lines in the script.
-
-Around **line 250**.
-
-```
-$lootFolder
-$logsDir
-```
-
-Example in the script:
+Set your folders like this:
 
 ```powershell
-$lootFolder = "YOUR_GID_FOLDER\D2RB\Looted"
-$logsDir = "YOUR_GID_FOLDER\D2RB\Logs"
-```
-
----
-
-### How to find your GID path
-
-1. Open your GID folder in Windows Explorer.
-
-Example:
-
-```
-GID-v3.317
-```
-
-2. Open the **D2RB** folder.
-
-3. Right click the **Looted** folder.
-
-4. Click:
-
-```
-Properties
-```
-
-5. Copy the folder path.
-
-Example:
-
-```
-C:\Users\Name\Desktop\GID-v3.317\D2RB\Looted
-```
-
----
-
-### Example configuration
-
-```powershell
-$lootFolder = "C:\Users\Name\Desktop\GID-v3.317\D2RB\Looted"
-$logsDir = "C:\Users\Name\Desktop\GID-v3.317\D2RB\Logs"
-```
-
-If the paths are wrong the script will not detect items.
-
----
-
-# 6 Character Name Mapping (ONLY if needed)
-
-Sometimes the **bot profile name is different from the character name**.
-
-Example:
-
-Profile name:
-
-```
-HammerBot
-```
-
-Character name:
-
-```
-Hammer
-```
-
-Around **line 2160** add:
-
-```powershell
-$characterToProfileMap = @{
-    "Hammer" = "HammerBot"
+Paths = @{
+    LootFolder = "C:\Users\YourName\Desktop\GID-v3.317\D2RB\Looted"
+    LogsFolder = "C:\Users\YourName\Desktop\GID-v3.317\D2RB\Logs"
 }
 ```
 
----
-
-### If the names are the same
-
-You **do not need to edit anything**.
+If these paths are wrong, the script will not detect items.
 
 ---
 
-# 7 Run the Script
+## 7. Choose Your High Rune Threshold
 
-Open **PowerShell 7**.
+Inside `UserConfig.psd1`, find:
 
-Navigate to the script folder.
-
-Example:
-
-```
-cd C:\Users\Name\Desktop\WebhookWithImages
+```powershell
+HighRunes = @(
 ```
 
-Run:
+Example: record **Ist and above only**
 
+```powershell
+HighRunes = @(
+    "Ist",
+    "Gul",
+    "Vex",
+    "Ohm",
+    "Lo",
+    "Sur",
+    "Ber",
+    "Jah",
+    "Cham",
+    "Zod"
+)
 ```
+
+Example: record **Pul and above**
+
+```powershell
+HighRunes = @(
+    "Pul",
+    "Um",
+    "Mal",
+    "Ist",
+    "Gul",
+    "Vex",
+    "Ohm",
+    "Lo",
+    "Sur",
+    "Ber",
+    "Jah",
+    "Cham",
+    "Zod"
+)
+```
+
+---
+
+## 8. Optional Settings
+
+You can also edit these in `UserConfig.psd1`:
+
+### ChannelsEnabled
+Turn specific channels on or off.
+
+### SummaryConfig
+Control daily and weekly summary timing.
+
+### MuledConfig
+Set character name, batch size, and delays for muled posts.
+
+---
+
+## 9. Run the Script
+
+Open PowerShell 7 in the script folder and run:
+
+```powershell
 pwsh -NoProfile -ExecutionPolicy Bypass -File ".\WebhookWithImages.ps1"
 ```
 
+Leave the window open while your bots are running.
+
+---
+
+## 10. Start GID
+
+Once items drop, they will automatically appear in Discord.
+
+---
+
+## Updating to a New Script Version
+
+This project now supports **config-based upgrades**.
+
+### Normal update process
+
+1. Back up your current folder.
+2. Replace `WebhookWithImages.ps1` with the new version.
+3. Keep your existing `UserConfig.psd1`.
+4. Run the script again.
+
+### Usually you do **not** need to re-enter:
+
+- Webhook URLs
+- GID paths
+- High rune settings
+- Channel preferences
+
+### Important note
+
+If a future update adds a **new config option**, you may need to copy one or two new keys into your existing `UserConfig.psd1`.
+
+That is usually much easier than re-editing the full script every update.
+
+---
+
+## Local Images
+
+The script supports local item images from the `Images` folder.
+
+### Naming rule
+
+Image files should use the cleaned item name plus `_graphic.png`.
+
+Examples:
+
+```text
+stormshield_graphic.png
+andarielsvisage_graphic.png
+trangoulsclaws_graphic.png
+mageplate_graphic.png
+```
+
+### Important notes
+
+- Use lowercase
+- Remove spaces
+- Remove apostrophes
+- Remove hyphens
+- Remove punctuation
+
+### Superior items
+
+For superior base items, the script strips the `Superior` prefix when matching images and item types.
+
 Example:
 
-![PowerShell Run](Screenshots/powershell_run.png)
+```text
+Superior Mage Plate -> mageplate_graphic.png
+```
 
-Leave this window open.
+If no exact item-name image is found, the script can fall back to type-based images.
 
 ---
 
-# 8 Start Your GID Bot
+## Troubleshooting
 
-Start your bot normally.
+If nothing posts, check:
 
-When items drop they will appear in Discord automatically.
+- PowerShell 7 is installed
+- Your webhook URL is correct in `UserConfig.psd1`
+- Your `LootFolder` path is correct
+- Your `LogsFolder` path is correct
+- The script window is still open
+- Discord webhooks are allowed in the target channel
 
----
+### If images do not match
 
-# Dashboard
+Check that the PNG filename matches the cleaned item name exactly.
 
-The script automatically generates:
+### If roll quality looks wrong
 
-```
-dashboard.html
-```
+Make sure you are using the latest `PerfectRollRules.json`.
 
-Open it in your browser to see drop statistics.
+### If essences or special items post to the wrong channel
 
----
-
-# Troubleshooting
-
-## Nothing posts to Discord
-
-Check:
-
-• Webhook URL correct  
-• GID folder paths correct  
-• Bot is running  
-• Script window still open  
+Make sure you are using the latest script version, since routing logic can change between releases.
 
 ---
 
-## Images not showing
+## Files You Should Normally Keep Private
 
-Verify these files exist in the same folder:
+Do not share your personal version of:
 
-```
-gfx.csv
-Images/
-```
+- `UserConfig.psd1`
+- live logs
+- personal statistics files
+- any script copy that still contains real webhook URLs
 
-Check:
-
-```
-image_log.txt
-```
+If you want to share the project with others, share the script with placeholders only.
 
 ---
 
-## Script will not run
+## Quick Start
 
-Run PowerShell as administrator and execute:
+See:
 
+```text
+QUICKSTART.txt
 ```
-Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
-```
+
+for the short setup version.
 
 ---
 
-# Security Warning
+## Notes for Future Updates
 
-Do **not share your webhook URLs publicly**.
+When new versions are released:
 
-Anyone with the webhook URL can post messages to your Discord.
+- replace the main script
+- keep your config
+- review release notes for any new config keys
+- update supporting JSON files if the release includes them
 
----
-
-# Credits
-
-Created by **Saggin_Nutz**  
-
-for the **GID / Diablo II Resurrected bot community**
-
+This keeps upgrades much faster and safer than editing the whole script every time.
