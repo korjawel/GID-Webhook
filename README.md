@@ -22,7 +22,7 @@ This script monitors your GID bot log files and automatically posts item drops t
 ![Perfect Item](Screenshots/discord_example_perfect.png)
 
 ### Rune Drop
-![Rune Drop](Screenshots/rune-drop.png)
+![Rune Drop](Screenshots/discord_example_rune.png)
 
 ### Farming Statistics Dashboard
 ![Dashboard](Screenshots/dashboard.png)
