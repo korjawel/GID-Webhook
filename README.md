@@ -206,3 +206,232 @@ UserConfig.psd1
 Add webhook URLs.
 
 Example:
+
+Webhooks = @{
+Default = ""
+Runes = ""
+HighRunes = ""
+Uniques = ""
+Sets = ""
+Charms = ""
+Jewels = ""
+Rings = ""
+Amulets = ""
+Weapons = ""
+Armor = ""
+Runewords = ""
+Keys = ""
+Essences = ""
+DLC = ""
+DailySummary = ""
+WeeklySummary = ""
+Deaths = ""
+}
+
+Leave unused channels blank.
+
+They will fallback to Default.
+
+---
+
+## 3. Configure GID Paths
+
+Inside UserConfig.psd1:
+
+Paths = @{
+LootFolder = "C:\GID\Looted"
+LogsFolder = "C:\GID\Logs"
+}
+
+These must match GID output folders.
+
+---
+
+## 4. Build Price Cache (Required)
+
+Run once before first use:
+
+pwsh -ExecutionPolicy Bypass -File .\Update-PriceCache.ps1
+
+Builds pricing lookup database.
+
+First run may take:
+
+10–20 minutes
+
+Required for:
+
+price estimation  
+confidence scoring  
+rune values  
+
+---
+
+## 5. Run Webhook
+
+Run:
+
+pwsh -ExecutionPolicy Bypass -File .\Webhook.ps1
+
+Leave window open.
+
+---
+
+## 6. Start GID
+
+Items will automatically post to Discord.
+
+---
+
+# Folder Structure
+
+![Folder Structure](Screenshots/folder_structure.png)
+
+Core files:
+
+Webhook.ps1  
+Update-PriceCache.ps1  
+UserConfig.psd1  
+
+PerfectRollRules.json  
+
+pricing json files  
+
+gfx.csv  
+RarityLookup.csv  
+
+Folders:
+
+Images  
+Logs  
+Screenshots  
+Tools  
+
+---
+
+# Creating Discord Webhooks
+
+![Create Webhook](Screenshots/webhook_create.png)
+
+Recommended channel structure:
+
+Default  
+high-runes  
+runes  
+uniques  
+sets  
+charms  
+jewels  
+ring  
+weapons  
+armor  
+keys  
+essences  
+dlc-items  
+summaries  
+
+---
+
+# Running Script
+
+![Run Script](Screenshots/powershell_run.png)
+
+Command:
+
+pwsh -ExecutionPolicy Bypass -File .\Webhook.ps1
+
+---
+
+# Editing Config
+
+![Config Example](Screenshots/edit_script_webhook.png)
+
+Edit:
+
+UserConfig.psd1
+
+Do NOT edit main script.
+
+---
+
+# Dashboard Files
+
+dashboard_drops.csv
+
+contains drop history
+
+dashboard_summary.txt
+
+quick stats summary
+
+dashboard_graph.json
+
+graph data
+
+dashboard.html
+
+visual dashboard
+
+---
+
+# Updating Script
+
+Replace:
+
+Webhook.ps1  
+Update-PriceCache.ps1  
+PerfectRollRules.json  
+pricing json files  
+
+Keep:
+
+UserConfig.psd1
+
+---
+
+# Troubleshooting
+
+Nothing posting:
+
+check webhook URL  
+check folder paths  
+check PowerShell version  
+run Update-PriceCache.ps1  
+
+Check logs:
+
+Logs/script_errors.txt  
+Logs/monitor_errors.txt  
+Logs/imagelog.txt  
+
+---
+
+# Advanced Features
+
+Multi-channel routing
+
+Confidence scoring
+
+Synthetic fallback pricing
+
+Alias normalization
+
+Runeword detection
+
+Perfect roll scoring
+
+Session tracking
+
+Superior base detection
+
+---
+
+# Contributing
+
+See CONTRIBUTING.md
+
+---
+
+# License
+
+MIT License
