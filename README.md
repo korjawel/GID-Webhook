@@ -15,9 +15,28 @@ Provides:
 
 ---
 
+# Example Output
+
+### Perfect roll example
+![Perfect Roll Example](Screenshots/discord_example_perfect.png)
+
+### Rune example
+![Rune Example](Screenshots/discord_example_rune.png)
+
+---
+
+# Dashboard Preview
+
+Tracks performance across sessions including runes, deaths, drops per hour and roll tier distribution.
+
+![Dashboard Example](Screenshots/dashboard_example.png)
+
+---
+
 # Features
 
 ## Item Detection
+
 Automatically detects:
 
 • Unique items  
@@ -32,6 +51,8 @@ Automatically detects:
 • Keys  
 • Essences  
 • DLC items  
+
+Routes items to correct Discord channels automatically.
 
 ---
 
@@ -86,45 +107,48 @@ Confidence: Medium
 
 ---
 
-## Config Driven Setup
+## Dashboard System
 
-All personal configuration stored in:
+The webhook includes a built-in performance dashboard.
 
-UserConfig.psd1
+Tracks:
 
-Allows:
+• items per hour  
+• rune frequency  
+• high rune drops  
+• deaths  
+• roll tier distribution  
+• character activity  
+• session duration  
 
-easy upgrades  
-safe sharing  
-multi-user support  
-no script editing required  
+Dashboard files generated automatically:
 
----
-
-## Dashboard Tracking
-
-Tracks performance across sessions:
-
+dashboard.html  
 dashboard_drops.csv  
-dashboard_summary.txt  
 dashboard_graph.json  
+dashboard_summary.txt  
 
-Supports:
+Open dashboard.html in browser.
 
-session stats  
-daily totals  
- lifetime totals  
- drop frequency  
+Refresh page to update stats.
+
+Useful for:
+
+tracking farming efficiency  
+comparing sessions  
+monitoring multiple bots  
 
 ---
 
 ## Superior Item Handling
 
-Superior bases automatically normalized:
+Superior bases normalized before image lookup.
+
+Example:
 
 Superior Archon Plate → Archon Plate
 
-Ensures correct image detection and avoids fallback gfx.
+Prevents incorrect fallback images.
 
 ---
 
@@ -141,200 +165,44 @@ Routes automatically to DLC webhook channel.
 
 ---
 
+## Config Driven Setup
+
+All user configuration stored in:
+
+UserConfig.psd1
+
+Allows:
+
+safe upgrades  
+easy sharing  
+no script editing required  
+
+---
+
 # Requirements
 
 PowerShell 7
 
 Download:
+
 https://github.com/PowerShell/PowerShell/releases
 
 ---
 
 # Installation
 
-## Step 1 – Download release
+## 1. Download repo
 
-Download repo zip or clone repo.
+Download ZIP or clone repo.
 
 ---
 
-## Step 2 – Configure User Settings
+## 2. Configure Webhooks
 
 Open:
 
 UserConfig.psd1
 
-Configure:
-
-Webhook URLs
-GID folder paths
+Add webhook URLs.
 
 Example:
-
-Webhooks = @{
-Default = ""
-Runes = ""
-Uniques = ""
-Sets = ""
-Charms = ""
-Jewels = ""
-Rings = ""
-Amulets = ""
-Armor = ""
-Weapons = ""
-Runewords = ""
-Essences = ""
-DLC = ""
-}
-
-Paths = @{
-LootFolder = "C:\GID\Looted"
-LogsFolder = "C:\GID\Logs"
-}
-
----
-
-## Step 3 – Build Price Cache
-
-Required before first run.
-
-Run:
-
-pwsh -ExecutionPolicy Bypass -File .\Update-PriceCache.ps1
-
-This prepares local pricing database.
-
-May take 10–20 minutes on first run.
-
-Only required when:
-
-price sources updated
-fresh install
-cache deleted
-
----
-
-## Step 4 – Run Webhook
-
-Run:
-
-pwsh -ExecutionPolicy Bypass -File .\Webhook.ps1
-
-Leave PowerShell window open.
-
----
-
-## Step 5 – Start GID
-
-Items will begin posting automatically.
-
----
-
-# File Structure
-
-Webhook.ps1  
-Update-PriceCache.ps1  
-UserConfig.psd1  
-
-PerfectRollRules.json  
-PerfectRolls.json  
-
-UniqueItems.json  
-SetItems.json  
-
-price_catalog_*.json  
-price_sources.json  
-
-gfx.csv  
-RarityLookup.csv  
-
-Images/  
-Logs/  
-Screenshots/  
-
----
-
-# Updating Script
-
-When updating:
-
-replace:
-
-Webhook.ps1  
-Update-PriceCache.ps1  
-PerfectRollRules.json  
-pricing json files  
-
-keep:
-
-UserConfig.psd1  
-
----
-
-# Troubleshooting
-
-Nothing posting:
-
-check webhook URL
-check folder paths
-check PowerShell version
-check logs folder
-
-Logs:
-
-Logs/script_errors.txt  
-Logs/monitor_errors.txt  
-Logs/imagelog.txt  
-
----
-
-# Advanced Features
-
-## Multi-channel routing
-
-Supports routing by:
-
-item type  
-rarity  
-runeword  
-perfect roll tier  
-
----
-
-## Confidence scoring
-
-Price confidence calculated using:
-
-sample size
-source consistency
-price variance
-synthetic fallback usage
-
----
-
-## Synthetic price fallback
-
-Used when live price unavailable.
-
-Ensures all items have approximate value.
-
----
-
-## Alias normalization
-
-Handles name variations:
-
-Shako → Harlequin Crest  
-SoJ → Stone of Jordan  
-
----
-
-# Contributing
-
-See contributor guide below.
-
----
-
-# License
-
-MIT License
