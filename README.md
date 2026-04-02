@@ -1,447 +1,340 @@
-# Diablo II Resurrected – GID Discord Drop Tracker
+# GID Diablo 2 Item Webhook
 
-A real-time Discord notification system for GID / D2RB bots.
+Advanced Discord webhook for Diablo 2 Resurrected item tracking using GID loot logs.
 
-This script monitors your GID bot log files and automatically posts item drops to Discord with:
+Provides:
 
-- Item images
-- Drop location
-- Character name
-- Roll quality detection
-- Perfect item tracking
-- Farming statistics dashboard
-- Session dashboard summaries
-- Local image fallback support
-- Config-based setup that survives future script updates
-
----
-
-## Example Discord Notifications
-
-### Perfect Item
-![Perfect Item](Screenshots/discord_example_perfect.png)
-
-### Rune Drop
-![Rune Drop](Screenshots/discord_example_rune.png)
-
-### Farming Statistics Dashboard
-![Dashboard](Screenshots/dashboard_example.png)
-
-The script automatically builds a dashboard showing:
-
-- Items per hour
-- Rune drop history
-- Farming zone performance
-- Character efficiency
-- Perfect roll tracking
-- Daily, weekly, and session summaries
+• automatic item posting  
+• perfect roll detection  
+• price estimation  
+• multi-channel routing  
+• dashboard tracking  
+• runeword detection  
+• DLC item support  
+• superior item gfx detection  
 
 ---
 
-## Folder Structure
+# Features
 
-Your folder should look like this:
+## Item Detection
+Automatically detects:
 
-```text
-WebhookWithImages/
-│
-├── WebhookWithImages.ps1
-├── UserConfig.psd1
-│
-├── PerfectRollRules.json
-├── PerfectRolls.json
-├── UniqueItems.json
-├── SetItems.json
-├── RarityLookup.csv
-├── gfx.csv
-│
-├── Images/
-├── Logs/
-├── Screenshots/
-├── Tools/
-│
-├── README.md
-└── QUICKSTART.txt
-```
-
-> **Important:**  
-> Do not put your personal webhook URLs or local paths into the main `.ps1` script.  
-> Put all personal settings in `UserConfig.psd1`.
+• Unique items  
+• Set items  
+• Runewords  
+• Runes  
+• Charms  
+• Jewels  
+• Rings  
+• Amulets  
+• Bases  
+• Keys  
+• Essences  
+• DLC items  
 
 ---
 
-## Requirements
+## Perfect Roll Detection
 
-You must install these first.
+Uses configurable rules:
 
-### 1. Install PowerShell 7
+PerfectRollRules.json
 
-Download the Windows installer from the PowerShell releases page:
+Supports:
 
-```text
-https://github.com/PowerShell/PowerShell/releases
-```
+• weighted stat scoring  
+• variable stat ranges  
+• stat direction preference  
+• multi-stat evaluation  
 
-Install the `.msi` version like any normal program.
+Roll tiers:
 
-### Verify installation
+Perfect  
+Godly  
+Great  
+Good  
+Average  
+Low  
 
-Press:
+Example output:
 
-```text
-Windows Key + R
-```
-
-Type:
-
-```text
-pwsh
-```
-
-Press Enter.
-
-You should see a blue PowerShell window showing version 7.x.
+Perfect Roll (100%) – Magefist
 
 ---
 
-## 2. Create a Discord Webhook
+## Price Estimation Engine
 
-Open Discord.
+Combines multiple price sources:
 
-Right click the channel you want item drops in.
+• Diablo2.io listings  
+• curated price datasets  
+• rune normalization  
+• runeword valuation logic  
+• synthetic fallback estimation  
 
-Click:
+Produces:
 
-```text
-Edit Channel
-Integrations
-Webhooks
-New Webhook
-```
-
-Copy the webhook URL.
-
----
-
-## 3. Unblock the Script (Important)
-
-Windows may block downloaded scripts.
-
-Right click:
-
-```text
-WebhookWithImages.ps1
-```
-
-Click:
-
-```text
-Properties
-```
-
-At the bottom, check:
-
-```text
-Unblock
-```
-
-Click **OK**.
-
-You may also want to repeat this for:
-
-- `UserConfig.psd1`
-- `PerfectRollRules.json`
-
----
-
-## 4. Configure the Tracker (New Config Method)
-
-You no longer need to edit personal settings inside the main script.
-
-Open:
-
-```text
-UserConfig.psd1
-```
-
-This file stores:
-
-- Discord webhook URLs
-- GID folder paths
-- High rune threshold
-- Enabled/disabled channels
-- Summary settings
-- Muled settings
-
-This means you only set it up once.
-
-When a new script version is released, you normally keep your existing `UserConfig.psd1` and replace only the `.ps1` file.
-
----
-
-## 5. Add Your Webhooks
-
-Inside `UserConfig.psd1`, find:
-
-```powershell
-Webhooks = @{
-```
-
-Paste your webhook URLs there.
-
-### Basic one-webhook setup
-
-If you want everything to go to one Discord channel, fill only:
-
-```powershell
-Default = "PASTE_WEBHOOK_URL_HERE"
-```
-
-### Multi-channel setup
-
-You can also split posts by category, for example:
-
-- `Runes`
-- `HighRunes`
-- `Uniques`
-- `Sets`
-- `Runewords`
-- `Charms`
-- `Jewels`
-- `Essences`
-- `Keys`
-- `DailySummary`
-- `WeeklySummary`
-- `SessionDashboard`
-- `Muled`
-
-If a category is left blank or set to a placeholder, the script will use fallback behavior where applicable.
-
----
-
-## 6. Configure Your GID Folder Paths
-
-Inside `UserConfig.psd1`, find:
-
-```powershell
-Paths = @{
-```
-
-Set your folders like this:
-
-```powershell
-Paths = @{
-    LootFolder = "C:\Users\YourName\Desktop\GID-v3.317\D2RB\Looted"
-    LogsFolder = "C:\Users\YourName\Desktop\GID-v3.317\D2RB\Logs"
-}
-```
-
-If these paths are wrong, the script will not detect items.
-
----
-
-## 7. Choose Your High Rune Threshold
-
-Inside `UserConfig.psd1`, find:
-
-```powershell
-HighRunes = @(
-```
-
-Example: record **Ist and above only**
-
-```powershell
-HighRunes = @(
-    "Ist",
-    "Gul",
-    "Vex",
-    "Ohm",
-    "Lo",
-    "Sur",
-    "Ber",
-    "Jah",
-    "Cham",
-    "Zod"
-)
-```
-
-Example: record **Pul and above**
-
-```powershell
-HighRunes = @(
-    "Pul",
-    "Um",
-    "Mal",
-    "Ist",
-    "Gul",
-    "Vex",
-    "Ohm",
-    "Lo",
-    "Sur",
-    "Ber",
-    "Jah",
-    "Cham",
-    "Zod"
-)
-```
-
----
-
-## 8. Optional Settings
-
-You can also edit these in `UserConfig.psd1`:
-
-### ChannelsEnabled
-Turn specific channels on or off.
-
-### SummaryConfig
-Control daily and weekly summary timing.
-
-### MuledConfig
-Set character name, batch size, and delays for muled posts.
-
----
-
-## 9. Run the Script
-
-Open PowerShell 7 in the script folder and run:
-
-```powershell
-pwsh -NoProfile -ExecutionPolicy Bypass -File ".\WebhookWithImages.ps1"
-```
-
-Leave the window open while your bots are running.
-
----
-
-## 10. Start GID
-
-Once items drop, they will automatically appear in Discord.
-
----
-
-## Updating to a New Script Version
-
-This project now supports **config-based upgrades**.
-
-### Normal update process
-
-1. Back up your current folder.
-2. Replace `WebhookWithImages.ps1` with the new version.
-3. Keep your existing `UserConfig.psd1`.
-4. Run the script again.
-
-### Usually you do **not** need to re-enter:
-
-- Webhook URLs
-- GID paths
-- High rune settings
-- Channel preferences
-
-### Important note
-
-If a future update adds a **new config option**, you may need to copy one or two new keys into your existing `UserConfig.psd1`.
-
-That is usually much easier than re-editing the full script every update.
-
----
-
-## Local Images
-
-The script supports local item images from the `Images` folder.
-
-### Naming rule
-
-Image files should use the cleaned item name plus `_graphic.png`.
-
-Examples:
-
-```text
-stormshield_graphic.png
-andarielsvisage_graphic.png
-trangoulsclaws_graphic.png
-mageplate_graphic.png
-```
-
-### Important notes
-
-- Use lowercase
-- Remove spaces
-- Remove apostrophes
-- Remove hyphens
-- Remove punctuation
-
-### Superior items
-
-For superior base items, the script strips the `Superior` prefix when matching images and item types.
+Estimated value  
+confidence rating  
+sample size  
 
 Example:
 
-```text
-Superior Mage Plate -> mageplate_graphic.png
-```
-
-If no exact item-name image is found, the script can fall back to type-based images.
+Estimated Value: 75 FG (40–120)  
+Confidence: Medium  
 
 ---
 
-## Troubleshooting
+## Config Driven Setup
 
-If nothing posts, check:
+All personal configuration stored in:
 
-- PowerShell 7 is installed
-- Your webhook URL is correct in `UserConfig.psd1`
-- Your `LootFolder` path is correct
-- Your `LogsFolder` path is correct
-- The script window is still open
-- Discord webhooks are allowed in the target channel
+UserConfig.psd1
 
-### If images do not match
+Allows:
 
-Check that the PNG filename matches the cleaned item name exactly.
-
-### If roll quality looks wrong
-
-Make sure you are using the latest `PerfectRollRules.json`.
-
-### If essences or special items post to the wrong channel
-
-Make sure you are using the latest script version, since routing logic can change between releases.
+easy upgrades  
+safe sharing  
+multi-user support  
+no script editing required  
 
 ---
 
-## Files You Should Normally Keep Private
+## Dashboard Tracking
 
-Do not share your personal version of:
+Tracks performance across sessions:
 
-- `UserConfig.psd1`
-- live logs
-- personal statistics files
-- any script copy that still contains real webhook URLs
+dashboard_drops.csv  
+dashboard_summary.txt  
+dashboard_graph.json  
 
-If you want to share the project with others, share the script with placeholders only.
+Supports:
 
----
-
-## Quick Start
-
-See:
-
-```text
-QUICKSTART.txt
-```
-
-for the short setup version.
+session stats  
+daily totals  
+ lifetime totals  
+ drop frequency  
 
 ---
 
-## Notes for Future Updates
+## Superior Item Handling
 
-When new versions are released:
+Superior bases automatically normalized:
 
-- replace the main script
-- keep your config
-- review release notes for any new config keys
-- update supporting JSON files if the release includes them
+Superior Archon Plate → Archon Plate
 
-This keeps upgrades much faster and safer than editing the whole script every time.
+Ensures correct image detection and avoids fallback gfx.
+
+---
+
+## DLC Item Support
+
+Supports custom expansion items:
+
+Entropy Locket  
+Horazon items  
+Worldstone Shard items  
+custom mod items  
+
+Routes automatically to DLC webhook channel.
+
+---
+
+# Requirements
+
+PowerShell 7
+
+Download:
+https://github.com/PowerShell/PowerShell/releases
+
+---
+
+# Installation
+
+## Step 1 – Download release
+
+Download repo zip or clone repo.
+
+---
+
+## Step 2 – Configure User Settings
+
+Open:
+
+UserConfig.psd1
+
+Configure:
+
+Webhook URLs
+GID folder paths
+
+Example:
+
+Webhooks = @{
+Default = ""
+Runes = ""
+Uniques = ""
+Sets = ""
+Charms = ""
+Jewels = ""
+Rings = ""
+Amulets = ""
+Armor = ""
+Weapons = ""
+Runewords = ""
+Essences = ""
+DLC = ""
+}
+
+Paths = @{
+LootFolder = "C:\GID\Looted"
+LogsFolder = "C:\GID\Logs"
+}
+
+---
+
+## Step 3 – Build Price Cache
+
+Required before first run.
+
+Run:
+
+pwsh -ExecutionPolicy Bypass -File .\Update-PriceCache.ps1
+
+This prepares local pricing database.
+
+May take 10–20 minutes on first run.
+
+Only required when:
+
+price sources updated
+fresh install
+cache deleted
+
+---
+
+## Step 4 – Run Webhook
+
+Run:
+
+pwsh -ExecutionPolicy Bypass -File .\Webhook.ps1
+
+Leave PowerShell window open.
+
+---
+
+## Step 5 – Start GID
+
+Items will begin posting automatically.
+
+---
+
+# File Structure
+
+Webhook.ps1  
+Update-PriceCache.ps1  
+UserConfig.psd1  
+
+PerfectRollRules.json  
+PerfectRolls.json  
+
+UniqueItems.json  
+SetItems.json  
+
+price_catalog_*.json  
+price_sources.json  
+
+gfx.csv  
+RarityLookup.csv  
+
+Images/  
+Logs/  
+Screenshots/  
+
+---
+
+# Updating Script
+
+When updating:
+
+replace:
+
+Webhook.ps1  
+Update-PriceCache.ps1  
+PerfectRollRules.json  
+pricing json files  
+
+keep:
+
+UserConfig.psd1  
+
+---
+
+# Troubleshooting
+
+Nothing posting:
+
+check webhook URL
+check folder paths
+check PowerShell version
+check logs folder
+
+Logs:
+
+Logs/script_errors.txt  
+Logs/monitor_errors.txt  
+Logs/imagelog.txt  
+
+---
+
+# Advanced Features
+
+## Multi-channel routing
+
+Supports routing by:
+
+item type  
+rarity  
+runeword  
+perfect roll tier  
+
+---
+
+## Confidence scoring
+
+Price confidence calculated using:
+
+sample size
+source consistency
+price variance
+synthetic fallback usage
+
+---
+
+## Synthetic price fallback
+
+Used when live price unavailable.
+
+Ensures all items have approximate value.
+
+---
+
+## Alias normalization
+
+Handles name variations:
+
+Shako → Harlequin Crest  
+SoJ → Stone of Jordan  
+
+---
+
+# Contributing
+
+See contributor guide below.
+
+---
+
+# License
+
+MIT License
